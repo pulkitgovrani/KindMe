@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ReactMic } from "react-mic";
 import applogo from "../assets/applogo.png";
+import pi from "../assets/ph.png";
 import { Link } from "react-router-dom";
 const ImageTextAudioRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -93,12 +94,14 @@ const ImageTextAudioRecorder = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-8 p-8 bg-white rounded-2xl shadow-2xl max-w-lg mx-auto">
+    <div
+      className="flex flex-col items-center content-space-between gap-8  bg-white w-full h-full"
+      style={{ maxWidth: "480px" }}
+    >
       {/* Header */}
       <img src={applogo} width={"180px"} alt="" />
       <h2 className="text-xl font-bold text-gray-700 text-center">
-        Upload an Image or write a text or record an audio to describe your
-        situation
+        Upload an Image, write as text or record audio to report
       </h2>
       {/* Location Display */}
       {/*<div className="text-gray-600 text-lg font-medium text-center">
@@ -112,23 +115,24 @@ const ImageTextAudioRecorder = () => {
         <p>{location.area ? `Area: ${location.area}` : ""}</p>
         <p>{location.pincode ? `Pincode: ${location.pincode}` : ""}</p>
       </div>"*/}
-      {/* Image Upload */}
-      <div className="flex flex-col w-full">
-        <label className="block text-gray-600 font-semibold mb-2">
-          Upload Image
-        </label>
-        <div className="flex items-center space-x-4 rounded-lg focus:ring-green-500s">
-          {/* Display Uploaded Image or Placeholder */}
-          <div className="w-1/2 border h-[120px] w-[150px] border-gray-300 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt="Uploaded"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <span className="text-gray-400">Image Preview</span>
-            )}
+      <div
+        className="flex flex-col items-center w-full p-4 gap-8 rounded-2xl shadow-2xl"
+        // style={{
+        //   backgroundColor: "rgba(200, 200, 200, 0.4)",
+        //   borderRadius: "13px",
+        // }}
+      >
+        {/* Image Upload */}
+        <div className="flex items-center flex-col w-full gap-4">
+          <label className="block text-gray-600 font-semibold mb-2 text-lg">
+            Upload Image
+          </label>
+          <div className="w-1/2 border h-[100px] w-[120px] border-gray-300 rounded-lg shadow-md flex items-center justify-center overflow-hidden">
+            <img
+              src={imageUrl || pi}
+              alt="Uploaded"
+              className="w-full h-full object-cover"
+            />
           </div>
           <input
             type="file"
@@ -145,69 +149,68 @@ const ImageTextAudioRecorder = () => {
             }}
             className="p-[8px] rounded-lg w-[225px]  "
           >
-            Choose FIle
+            Choose File
           </button>
         </div>
-      </div>
-      {/* Text Input */}
-      <div className="w-full">
-        <label className="block text-gray-600 font-semibold mb-2">
-          Explain the Situation
-        </label>
-        <input
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Type something..."
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none "
-        />
-      </div>
-      {/* Audio Recorder */}
-      <div className="w-full">
-        <span style={{ display: isRecording ? "block" : "none" }}>
-          <ReactMic
-            record={isRecording}
-            onStop={onStop}
-            strokeColor="#4B5563" // Dark gray waveform line for a subtle look
-            backgroundColor="#F3F4F6" // Light gray background
-            mimeType="audio/webm"
-            className={`rounded-lg shadow-md w-full h-[50px]`}
+        {/* Text Input */}
+        <div className="flex items-center flex-col w-full gap-4">
+          <textarea
+            rows={2}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Explain you situation here..."
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none "
           />
-        </span>
-        <>
-          {/* Audio Playback */}
-          {audioUrl && (
-            <div
-              className="w-full"
-              style={{ display: !audioUrl || isRecording ? "none" : "block" }}
-            >
-              <h3 className="text-gray-600 font-semibold mb-2">
-                Recorded Audio:
-              </h3>
-              <audio
-                src={audioUrl}
-                controls
-                className="w-full rounded-lg border border-gray-300 p-2"
-              />
-            </div>
-          )}
-        </>
+        </div>
+        {/* Audio Recorder */}
+        <div className="flex items-center flex-col w-full gap-4">
+          {/* Click-to-record button */}
+          <label className="block text-gray-600 font-semibold text-center text-lg">
+            Click to Record Audio
+          </label>
+          <span
+            style={{ display: isRecording || !audioUrl ? "block" : "none" }}
+          >
+            <ReactMic
+              record={isRecording}
+              onStop={onStop}
+              strokeColor="#4B5563" // Dark gray waveform line for a subtle look
+              backgroundColor="#F3F4F6" // Light gray background
+              mimeType="audio/webm"
+              className={`rounded-lg shadow-md w-full h-[50px]`}
+            />
+          </span>
+          <>
+            {/* Audio Playback */}
+            {audioUrl && (
+              <div
+                className="w-full"
+                style={{ display: !audioUrl || isRecording ? "none" : "block" }}
+              >
+                <audio
+                  src={audioUrl}
+                  controls
+                  className="w-full rounded-lg border border-gray-300 p-2"
+                />
+              </div>
+            )}
+          </>
+        </div>
+        <button
+          onClick={toggleRecording}
+          className={`w-full px-4 py-3 font-semibold rounded-lg transition duration-300 border border-gray-300 ${
+            isRecording ? "hover:bg-white-600" : "hover:bg-white-600"
+          } text-black shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+            isRecording ? "focus:ring-red-400" : "focus:ring-green-400"
+          }`}
+          style={{ backgroundColor: "transparent" }} // Remove background color
+        >
+          {isRecording
+            ? "Stop Recording"
+            : audioUrl
+            ? "Record Again"
+            : "Start Recording"}
+        </button>
       </div>
-      {/* Click-to-record button */}
-      <label className="block text-gray-600 font-semibold text-left">
-        Click to Record Your Situation
-      </label>
-      <button
-        onClick={toggleRecording}
-        className={`w-full px-4 py-3 font-semibold rounded-lg transition duration-300 border border-gray-300 ${
-          isRecording ? "hover:bg-white-600" : "hover:bg-white-600"
-        } text-black shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-          isRecording ? "focus:ring-red-400" : "focus:ring-green-400"
-        }`}
-        style={{ backgroundColor: "transparent" }} // Remove background color
-      >
-        {isRecording ? "Stop Recording" : "Start Recording"}
-      </button>
 
       {/* Submit Button */}
       <Link to="/locations" className="w-full">

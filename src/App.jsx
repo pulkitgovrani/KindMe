@@ -2,11 +2,15 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import MapAndListView from "./components/MapAndListView";
 import ImageTextAudioRecorder from "./components/ImageTextAudioRecorder";
+import "@ionic/react/css/core.css";
+import { setupIonicReact } from "@ionic/react";
+
+setupIonicReact();
 
 const App = () => {
   return (
     <Router>
-      <div className="complete_container flex flex-col min-h-screen bg-white text-gray-800">
+      <div className="complete_container flex flex-col  align-center min-h-screen bg-white text-gray-800">
         {/* Navigation 
         <nav className="bg-[#72C1A4] p-4">
           <ul className="flex space-x-4">
@@ -30,7 +34,7 @@ const App = () => {
         </nav>
           */}
         {/* Main Content */}
-        <main className="flex-grow container mx-auto p-6 bg-white">
+        <main className="flex-grow align-center flex flex-col container mx-auto p-6 bg-white">
           <Routes>
             <Route path="/" element={<ImageTextAudioRecorder />} />
             <Route path="/locations" element={<MapAndListView />} />

@@ -1,5 +1,8 @@
 import React from "react";
 
+import { Link } from "react-router-dom";
+import applogo from "../assets/applogo.png";
+
 const locations = [
   {
     formatted_address:
@@ -21,46 +24,66 @@ const locations = [
 
 const MapAndListView = () => {
   return (
-    <div className="flex flex-col items-center gap-8 p-8 bg-white rounded-2xl shadow-2xl max-w-lg mx-auto w-[800px]">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg">
-        <h2 className="text-2xl font-bold mb-4 w-full text-left">
-          Quick Measures After an Accident
-        </h2>
-        <ul className="list-disc list-inside space-y-3">
-          <li className="flex items-start">
-            <span className="text-green-500 mr-2">✔️</span>
-            <span>
-              Ensure Safety: Move to a safe location away from traffic or
-              hazards if possible. Turn on hazard lights if you are in a
-              vehicle.
-            </span>
-          </li>
-          <li className="flex items-start">
-            <span className="text-green-500 mr-2">✔️</span>
-            <span>
-              Assess the Situation: Check if anyone is injured and determine the
-              severity of the injuries.
-            </span>
-          </li>
-          <li className="flex items-start">
-            <span className="text-green-500 mr-2">✔️</span>
-            <span>
-              Call Emergency Services: Dial emergency services (e.g., 911) to
-              report the accident and request medical assistance.
-            </span>
-          </li>
-        </ul>
-      </div>
+    <div
+      className="flex flex-col items-center gap-8  bg-white w-full"
+      style={{ maxWidth: "480px" }}
+    >
       <div className="w-full">
-        <h2 className="text-2xl font-bold text-left mb-[-25px] ">
-          Explore Nearest Hospital
+        <Link to="/">
+          <button
+            className="bg-white-600 font-bold"
+            style={{ backgroundColor: "white", color: "#72c1a4" }}
+          >
+            {"Back"}
+          </button>
+        </Link>
+      </div>
+      <img src={applogo} width={"180px"} alt="" />
+
+      <div className="w-full">
+        <h2 className="text-xl font-bold text-gray-700 text-left">
+          Quick Measures
+        </h2>
+      </div>
+      <ul className="list-disc list-inside space-y-3">
+        <li className="flex items-start">
+          <span className="text-green-500 mr-2">✔️</span>
+          <span>
+            Ensure Safety: Move to a safe location away from traffic or hazards
+            if possible. Turn on hazard lights if you are in a vehicle.
+          </span>
+        </li>
+        <li className="flex items-start">
+          <span className="text-green-500 mr-2">✔️</span>
+          <span>
+            Assess the Situation: Check if anyone is injured and determine the
+            severity of the injuries.
+          </span>
+        </li>
+        <li className="flex items-start">
+          <span className="text-green-500 mr-2">✔️</span>
+          <span>
+            Call Emergency Services: Dial emergency services (e.g., 911) to
+            report the accident and request medical assistance.
+          </span>
+        </li>
+      </ul>
+      <div className="w-full">
+        <h2 className="text-xl font-bold text-gray-700 text-left">
+          Nearby Places for Emergency Help
         </h2>
       </div>
       <div className="">
         <ul className=" list-inside">
           {console.log(locations)}
           {locations.map((location, index) => (
-            <li key={index} className="mb-6 shadow-lg p-[20px]">
+            <li
+              key={index}
+              className="mb-6 shadow-lg p-[20px] flex flex-col items-left gap-2"
+            >
+              <label className="block text-gray-600 text-xl font-bold">
+                Hospital Name
+              </label>
               <p className="font-medium">{location.formatted_address}</p>
               <div className="">
                 <a
