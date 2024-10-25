@@ -1,0 +1,47 @@
+/* Theme colors */
+:root {
+  --primary-green: #72c1a4;
+  --primary-white: #ffffff;
+}
+.complete_container {
+  height: 100vh;
+  width: 100vw;
+  background-image: url("./assets/bg.png");
+}
+/* Header and Footer Styling */
+.header,
+.footer {
+  background-color: var(--primary-green);
+  color: var(--primary-white);
+}
+
+/* Link Styles */
+a {
+  color: var(--primary-green);
+}
+
+/* Button Styles */
+button {
+  background-color: var(--primary-green);
+  color: var(--primary-white);
+}
+
+button:hover {
+  background-color: #4fa083;
+}
+
+/* Main Content Styles */
+.container {
+  color: #333333;
+}
+
+input[type="file"],
+input[type="text"] {
+  border-color: var(--primary-green);
+}
+
+input[type="file"]:focus,
+input[type="text"]:focus {
+  border-color: #4fa083;
+  box-shadow: 0 0 0 1px #4fa083;
+}
