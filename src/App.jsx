@@ -4,6 +4,7 @@ import MapAndListView from "./components/MapAndListView";
 import ImageTextAudioRecorder from "./components/ImageTextAudioRecorder";
 import "@ionic/react/css/core.css";
 import { setupIonicReact } from "@ionic/react";
+import bg from "./assets/screen-bg.png";
 
 setupIonicReact();
 

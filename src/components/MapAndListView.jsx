@@ -88,17 +88,21 @@ const MapAndListView = () => {
               <div className="">
                 <a
                   href={`tel:${location.phone.replace(/\s/g, "")}`} // Removes spaces from phone number for dialing
-                  className="inline-block px-4 py-2 bg-green-500 text-white rounded-lg mr-2 transition duration-300 hover:bg-green-600"
+                  className="text-white mr-1"
                 >
-                  Call Now
+                  <button className="text-white mr-2 p-[8px] rounded-lg">
+                    Call Now
+                  </button>
                 </a>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${location.geometry.location.lat},${location.geometry.location.lng}`}
                   target="_blank" // Open in a new tab
                   rel="noopener noreferrer"
-                  className="inline-block px-4 py-2 bg-purple-500 text-white rounded-lg transition duration-300 hover:bg-purple-600"
+                  className="text-whit"
                 >
-                  Get Directions
+                  <button className="p-[8px] rounded-lg secondary">
+                    Get Directions
+                  </button>
                 </a>
               </div>
             </li>

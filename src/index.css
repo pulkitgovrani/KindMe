@@ -4,6 +4,7 @@
 /* Theme colors */
 :root {
   --primary-green: #72c1a4;
+  --secondary-purple: #782082;
   --primary-white: #ffffff;
 }
 
@@ -27,6 +28,15 @@ button {
 
 button:hover {
   background-color: #4fa083;
+}
+
+button.secondary {
+  background-color: var(--secondary-purple);
+  color: var(--primary-white);
+}
+
+button.secondary:hover {
+  background-color: #681471;
 }
 
 /* Main Content Styles */
