@@ -2,12 +2,19 @@ import React, { useState, useEffect, useRef } from "react";
 import { ReactMic } from "react-mic";
 import applogo from "../assets/applogo.png";
 import pi from "../assets/ph.png";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Dialog from "./Dialog";
 const ImageTextAudioRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
+  const [audio, setAudio] = useState(null);
   const [text, setText] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
+  const [overallLatitute, setOverallLatitude] = useState("");
+  const [overallLongitude, setOverallLongitude] = useState("");
+  const [responseData, setResponseData] = useState(null);
+  const [fetchingData, setFetchingData] = useState(false);
+  const navigate = useNavigate(); // Hook to get the navigate function
   const [location, setLocation] = useState({
     city: "",
     country: "",
@@ -20,7 +27,9 @@ const ImageTextAudioRecorder = () => {
 
   // Handle recording stop and retrieve audio URL
   const onStop = (recordedData) => {
+    console.log(recordedData);
     setAudioUrl(recordedData.blobURL);
+    setAudio(recordedData.blob);
   };
 
   // Handle image upload
@@ -35,7 +44,7 @@ const ImageTextAudioRecorder = () => {
   // Fetch user location using Google Maps Geocoding API
   const fetchLocation = async (lat, lon) => {
     console.log("inside fetch location");
-    //const apiKey = "AIzaSyChyTUIAlaNqY5QK8tvcmlPMY6WqvF3E4c"; // Replace with your Google Maps API key
+    const apiKey = "AIzaSyChyTUIAlaNqY5QK8tvcmlPMY6WqvF3E4c"; // Replace with your Google Maps API key
     try {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}`
@@ -77,6 +86,8 @@ const ImageTextAudioRecorder = () => {
         (position) => {
           console.log("doiuble inside geolocation");
           const { latitude, longitude } = position.coords;
+          setOverallLatitude(latitude);
+          setOverallLongitude(longitude);
           fetchLocation(latitude, longitude);
         },
         (error) => {
@@ -88,14 +99,32 @@ const ImageTextAudioRecorder = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   };
+  const handleSubmit = async () => {
+    setFetchingData(true);
+    const baseurl = `https://42e8-61-246-51-230.ngrok-free.app/upload/?latitude=${overallLatitute}&longitude=${overallLongitude}`;
+    const formData = new FormData();
+    if (imageUrl) formData.append("file", imageInputRef.current.files[0]); // Attach the image file
+    if (audioUrl) formData.append("file", audio); // Attach the audio file
+    if (text) formData.append("help_text", text); // Attach the text
+    const response = await fetch(baseurl, {
+      method: "POST",
+      body: formData,
+    });
+    const jsonData = await response.json();
+    setResponseData(jsonData);
+    setFetchingData(false);
 
+    navigate("/locations", { state: { data: jsonData } }); // Pass jsonData directly
+  };
   useEffect(() => {
     getLocation();
   }, []);
-
+  useEffect(() => {
+    console.log("this is response data", responseData);
+  }, [responseData]);
   return (
     <div
-      className="flex flex-col items-center content-space-between gap-8  bg-white w-full h-full"
+      className="flex flex-col items-center content-space-between gap-6  bg-white w-full h-full"
       style={{ maxWidth: "480px" }}
     >
       {/* Header */}
@@ -213,13 +242,16 @@ const ImageTextAudioRecorder = () => {
       </div>
 
       {/* Submit Button */}
-      <Link to="/locations" className="w-full">
-        <button
-          className={`w-full px-4 py-3 font-semibold rounded-lg transition duration-300 bg-white-500 hover:bg-white-600 text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400`}
-        >
-          Submit
-        </button>
-      </Link>
+      <button
+        onClick={handleSubmit}
+        className={`w-full px-4 py-3 font-semibold rounded-lg transition duration-300 bg-white-500 hover:bg-white-600 text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400`}
+        disabled={!audio && !text && !imageUrl}
+      >
+        Submit
+      </button>
+      <Dialog isOpen={fetchingData} onClose={setFetchingData} title={""}>
+        <p>Submitting Details...</p>
+      </Dialog>
     </div>
   );
 };

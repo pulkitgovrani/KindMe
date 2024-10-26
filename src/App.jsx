@@ -29,7 +29,7 @@ const App = () => {
         </nav>
           */}
         {/* Main Content */}
-        <main className="flex-grow align-center flex flex-col container mx-auto p-6 bg-white">
+        <main className="flex-grow flex justify-center items-center container mx-auto p-6 bg-white">
           <Routes>
             <Route path="/" element={<ImageTextAudioRecorder />} />
             <Route path="/locations" element={<MapAndListView />} />
