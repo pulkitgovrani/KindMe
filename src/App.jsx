@@ -2,12 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import MapAndListView from "./components/MapAndListView";
 import ImageTextAudioRecorder from "./components/ImageTextAudioRecorder";
-import "@ionic/react/css/core.css";
-import { setupIonicReact } from "@ionic/react";
-import bg from "./assets/screen-bg.png";
-
-setupIonicReact();
-
 const App = () => {
   return (
     <Router>
